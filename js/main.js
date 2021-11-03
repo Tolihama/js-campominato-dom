@@ -33,7 +33,6 @@ playBtn.addEventListener('click', () => {
     const bombList = bombGen(bombs, cellsNumber);
     const attemps = [];
     const maxAttemps = cellsNumber - bombs;
-    console.log(bombList);
 
     // Create grid element
     const gridEl = document.createElement('div');
