@@ -29,7 +29,7 @@ playBtn.addEventListener('click', () => {
             bombs = 16;
     }
 
-    // Init tracker arrays
+    // Init bomb and attempts arrays
     const bombList = bombGen(bombs, cellsNumber);
     const attemps = [];
     const maxAttemps = cellsNumber - bombs;
@@ -68,7 +68,7 @@ function clickSquareHandler(square, bombList, attempsList, maxAttempts) {
     }
 }
 
-// End game message
+// End game
 function endGame(bombList, attempsList, maxAttempts) {
     // Disable grid
     document.querySelector('.grid').classList.add('end-game');
@@ -76,7 +76,7 @@ function endGame(bombList, attempsList, maxAttempts) {
     // Show all bombs
     const squares = document.querySelectorAll('.square');
     for (let i = 0; i < squares.length; i++) {
-        if (bombList.includes(i + 1)) {
+        if (bombList.includes(parseInt(squares[i].childNodes[0].innerHTML))) {
             squares[i].classList.add('bomb');
         }
     }
