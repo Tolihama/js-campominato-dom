@@ -20,6 +20,10 @@ main {
     margin: 60px auto;
 }
 
+.grid.end-game .square {
+    pointer-events: none;
+}
+
 .square {
     display: flex;
     justify-content: center;
@@ -32,6 +36,15 @@ main {
     background-color: #fff;
 }
 
-.square.clicked {
-    background-color: #7ab7eb;
+.square.safe,
+.square.bomb {
+    color: #fff;
+}
+
+.square.safe {
+    background-color: #6495ed;
+}
+
+.square.bomb {
+    background-color: #dc143c;
 }

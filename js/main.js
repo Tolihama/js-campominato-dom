@@ -32,6 +32,7 @@ playBtn.addEventListener('click', () => {
     // Init tracker arrays
     const bombList = bombGen(bombs, cellsNumber);
     const attemps = [];
+    const maxAttemps = cellsNumber - bombs;
     console.log(bombList);
 
     // Create grid element
@@ -45,7 +46,7 @@ playBtn.addEventListener('click', () => {
         const square = createSquareGrid(i, cellsPerRow);
 
         // Add event listener to each square
-        square.addEventListener('click', () => clickSquareHandler());
+        square.addEventListener('click', () => clickSquareHandler(square, bombList, attemps, maxAttemps));
 
         // Add square to grid
         gridEl.append(square);
@@ -54,8 +55,44 @@ playBtn.addEventListener('click', () => {
 
 // FUNCTIONS
 // Handler click event square
-function clickSquareHandler() {
+function clickSquareHandler(square, bombList, attempsList, maxAttempts) {
+    const squareNumber = parseInt(square.childNodes[0].innerHTML);
 
+    if(!bombList.includes(squareNumber)) {
+        square.classList.add('safe');
+        attempsList.push(squareNumber);
+        if (attempsList.length === maxAttempts) {
+            endGame(attempsList, maxAttempts);
+        }
+    } else {
+        const squares = document.querySelectorAll('.square');
+        for (let i = 0; i < squares.length; i++) {
+            if (bombList.includes(i + 1)) {
+                squares[i].classList.add('bomb');
+            }
+        }
+        endGame(attempsList, maxAttempts);
+    }
+}
+
+// End game message
+function endGame(attempsList, maxAttempts) {
+    // Disable grid
+    document.querySelector('.grid').classList.add('end-game');
+
+    // Create dom element for end game message
+    const messageEl = document.createElement('div');
+    messageEl.classList.add('text-center', 'fw-bold', 'fs-5', 'mb-5');
+
+    // Set end game message
+    let message;
+    if (attempsList.length === maxAttempts) {
+        message = `Hai vinto! Hai azzeccato tutte le ${maxAttempts} caselle salve!`
+    } else {
+        message = `Hai perso! Hai azzeccato ${attempsList.length} caselle su un totale di ${maxAttempts}. Gioca ancora...`
+    }
+    messageEl.append(message);
+    document.querySelector('.wrap-grid').append(messageEl); 
 }
 
 // Bomb generator
@@ -69,7 +106,6 @@ function bombGen(bombNumber, cellsNumber) {
     }
     return bombList;
 }
-
 
 // Create squares in grid
 function createSquareGrid(num, cells) {
