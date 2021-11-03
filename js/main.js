@@ -60,6 +60,7 @@ function clickSquareHandler(square, bombList, attempsList, maxAttempts) {
     if(!bombList.includes(squareNumber)) {
         square.classList.add('safe');
         attempsList.push(squareNumber);
+        console.log(attempsList);
         if (attempsList.length === maxAttempts) {
             endGame(attempsList, maxAttempts);
         }
@@ -91,7 +92,7 @@ function endGame(attempsList, maxAttempts) {
         message = `Hai perso! Hai azzeccato ${attempsList.length} caselle su un totale di ${maxAttempts}. Gioca ancora...`
     }
     messageEl.append(message);
-    document.querySelector('.wrap-grid').append(messageEl); 
+    wrapGridEl.append(messageEl); 
 }
 
 // Bomb generator

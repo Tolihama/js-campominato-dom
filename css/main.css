@@ -20,7 +20,8 @@ main {
     margin: 60px auto;
 }
 
-.grid.end-game .square {
+.grid.end-game .square,
+.square.safe {
     pointer-events: none;
 }
 
