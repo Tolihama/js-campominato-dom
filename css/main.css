@@ -1,0 +1,37 @@
+/* GENERAL STYLES */
+body {
+    min-height: 100vh;
+}
+
+main {
+    background-color: aquamarine;
+}
+
+.logo {
+    height: 50px;
+}
+
+/* GRID */
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 600px;
+    height: 600px;
+    margin: 60px auto;
+}
+
+.square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #000;
+    cursor: pointer;
+}
+
+.square:hover {
+    background-color: #fff;
+}
+
+.square.clicked {
+    background-color: #7ab7eb;
+}
