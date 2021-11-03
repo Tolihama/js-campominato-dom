@@ -60,25 +60,26 @@ function clickSquareHandler(square, bombList, attempsList, maxAttempts) {
     if(!bombList.includes(squareNumber)) {
         square.classList.add('safe');
         attempsList.push(squareNumber);
-        console.log(attempsList);
         if (attempsList.length === maxAttempts) {
-            endGame(attempsList, maxAttempts);
+            endGame(bombList, attempsList, maxAttempts);
         }
     } else {
-        const squares = document.querySelectorAll('.square');
-        for (let i = 0; i < squares.length; i++) {
-            if (bombList.includes(i + 1)) {
-                squares[i].classList.add('bomb');
-            }
-        }
-        endGame(attempsList, maxAttempts);
+        endGame(bombList, attempsList, maxAttempts);
     }
 }
 
 // End game message
-function endGame(attempsList, maxAttempts) {
+function endGame(bombList, attempsList, maxAttempts) {
     // Disable grid
     document.querySelector('.grid').classList.add('end-game');
+
+    // Show all bombs
+    const squares = document.querySelectorAll('.square');
+    for (let i = 0; i < squares.length; i++) {
+        if (bombList.includes(i + 1)) {
+            squares[i].classList.add('bomb');
+        }
+    }
 
     // Create dom element for end game message
     const messageEl = document.createElement('div');
