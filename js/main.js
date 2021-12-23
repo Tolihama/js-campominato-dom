@@ -88,12 +88,12 @@ function endGame(bombList, attempsList, maxAttempts) {
     // Set end game message
     let message;
     if (attempsList.length === maxAttempts) {
-        message = `Hai vinto! Hai azzeccato tutte le ${maxAttempts} caselle salve!`
+        message = `Hai vinto! Hai azzeccato tutte le ${maxAttempts} caselle salve!`;
     } else {
-        message = `Hai perso! Hai azzeccato ${attempsList.length} caselle su un totale di ${maxAttempts}. Gioca ancora...`
+        message = `Hai perso! Hai azzeccato ${attempsList.length} caselle su un totale di ${maxAttempts}. Gioca ancora...`;
     }
     messageEl.append(message);
-    wrapGridEl.append(messageEl); 
+    wrapGridEl.append(messageEl);
 }
 
 // Bomb generator

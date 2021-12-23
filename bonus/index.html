@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Griglia Campo Minato</title>
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- VUE -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+    <div id="app" class="d-flex flex-column">
+        <header class="d-flex justify-content-center align-items-center container">
+            <div class="d-flex align-items-center f-grow-1">
+                <img src="./img/logo.png" alt="Logo" class="logo m-3">
+                <h1>Campo Booleano</h1>
+            </div>
+        </header>
+    
+        <main class="flex-grow-1">
+            <div class="container d-flex">
+                <!-- GRID -->
+                <div class="grid flex-grow-1">
+                    <div
+                        class="row"
+                        v-for="(row, y) in yColumns"
+                        :key="`row-${y}`"
+                    >
+                        <div 
+                            class="square"
+                            v-for="(cell, x) in xCells"
+                            :key="`cell-${x}-${y}`"
+                            @click="whoAreYou(x, y)"
+                        >
+                         {{ `x:${x} y:${y} id:${x + y * xCells}` }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASIDE - GAME OPTIONS -->
+                <aside class="d-flex flex-column align-items-end flex-shrink-0">
+                    <h2>Opzioni di gioco</h2>
+                    <div class="d-flex align-items-center w-100">
+                        <input v-model="x" type="number" name="x-cells" min="4" max="20">
+                        <label for="x-cells" class="text-center flex-grow-1">Celle per riga</label>
+                    </div>
+                    <div class="d-flex align-items-center w-100">
+                        <input v-model="y" type="number" name="y-columns" min="4" max="20">
+                        <label for="y-columns" class="text-center flex-grow-1">Colonne</label>
+                    </div>
+                    <div class="d-flex align-items-center w-100">
+                        <input v-model="bombs" type="number" name="bombs" min="1" :max="maxBombs">
+                        <label for="bombs" class="text-center flex-grow-1">Numero mine</label>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        Dimensione griglia: {{ gridCells }}
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        Massimo numero di bombe ammesso: {{ maxBombs }}
+                    </div>
+                    <div>
+                        <button>Genera griglia</button>
+                    </div>
+                </aside>
+
+            </div>
+        </main>
+    
+        <footer class="container py-3">
+            Made with &hearts; by <a href="http://boolean.careers/">Boolean</a>
+        </footer>
+    </div>
+
+    <!-- JS -->
+    <script src="./js/main.js"></script>
+</body>
+</html>
