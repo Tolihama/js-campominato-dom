@@ -1,10 +1,15 @@
 /* GENERAL STYLES */
+body {
+    height: 100vh;
+}
+
 #app {
-    min-height: 100vh;
+    height: 100%;
 }
 
 main {
     background-color: aquamarine;
+    overflow: hidden;
 }
 
 .logo {
@@ -12,8 +17,8 @@ main {
 }
 
 /* GRID */
-.grid {
-    margin: 60px auto;
+.grid-container {
+    overflow: auto;
 }
 
 .grid.end-game .square,
@@ -35,13 +40,52 @@ main {
     background-color: #fff;
 }
 
-.square.safe,
 .square.bomb {
     color: #fff;
 }
 
 .square.safe {
-    background-color: #6495ed;
+    pointer-events: none;
+}
+
+.square.safe-0 {
+    background-color: hsl(120, 100%, 90%);
+}
+
+.square.safe-1 {
+    background-color: hsl(80, 90%, 70%);
+}
+
+.square.safe-2 {
+    background-color: hsl(70, 90%, 70%);;
+}
+
+.square.safe-3 {
+    background-color: hsl(60, 90%, 70%);;
+}
+
+.square.safe-4 {
+    background-color: hsl(50, 90%, 70%);;
+}
+
+.square.safe-5 {
+    background-color: hsl(40, 90%, 70%);;
+}
+
+.square.safe-6 {
+    background-color: hsl(30, 90%, 70%);;
+}
+
+.square.safe-7 {
+    background-color: hsl(20, 90%, 70%);;
+}
+
+.square.safe-8 {
+    background-color: hsl(10, 90%, 70%);;
+}
+
+.square.safe-9 {
+    background-color: hsl(0, 90%, 70%);;
 }
 
 .square.bomb {

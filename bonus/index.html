@@ -22,38 +22,45 @@
         </header>
     
         <main class="flex-grow-1">
-            <div class="container d-flex">
+            <div class="container h-100 d-flex">
                 <!-- GRID -->
-                <div class="grid flex-grow-1">
-                    <div
-                        class="row"
-                        v-for="(row, y) in yColumns"
-                        :key="`row-${y}`"
-                    >
-                        <div 
-                            class="square"
-                            v-for="(cell, x) in xCells"
-                            :key="`cell-${x}-${y}`"
-                            @click="whoAreYou(x, y)"
+                <div class="grid-container flex-grow-1">
+                    <div class="grid p-3">
+                        <div
+                            class="row justify-content-center flex-nowrap"
+                            v-for="(row, y) in yRows"
+                            :key="`row-${y}`"
                         >
-                         {{ `x:${x} y:${y} id:${x + y * xCells}` }}
+                            <div 
+                                class="square"
+                                v-for="(cell, x) in xColumns"
+                                :key="`cell-${x}-${y}`"
+                                @click="playGame(x, y)"
+                                :id="`square-${x + y * xColumns}`"
+                            >
+                             {{ `x:${x} y:${y} id:${squareId(x, y)}` }}
+                            </div>
                         </div>
                     </div>
                 </div>
+                
 
                 <!-- ASIDE - GAME OPTIONS -->
-                <aside class="d-flex flex-column align-items-end flex-shrink-0">
+                <aside 
+                    class="d-flex flex-column align-items-end flex-shrink-0"
+                    v-if="!gameStarted"
+                >
                     <h2>Opzioni di gioco</h2>
                     <div class="d-flex align-items-center w-100">
-                        <input v-model="x" type="number" name="x-cells" min="4" max="20">
-                        <label for="x-cells" class="text-center flex-grow-1">Celle per riga</label>
+                        <input v-model.number="xInput" type="number" name="x-columns" min="4" max="20">
+                        <label for="x-columns" class="text-center flex-grow-1">Colonne</label>
                     </div>
                     <div class="d-flex align-items-center w-100">
-                        <input v-model="y" type="number" name="y-columns" min="4" max="20">
-                        <label for="y-columns" class="text-center flex-grow-1">Colonne</label>
+                        <input v-model.number="yInput" type="number" name="y-rows" min="4" max="20">
+                        <label for="y-rows" class="text-center flex-grow-1">Righe</label>
                     </div>
                     <div class="d-flex align-items-center w-100">
-                        <input v-model="bombs" type="number" name="bombs" min="1" :max="maxBombs">
+                        <input v-model.number="bombsInput" type="number" name="bombs" min="1" :max="maxBombs">
                         <label for="bombs" class="text-center flex-grow-1">Numero mine</label>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -61,9 +68,6 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         Massimo numero di bombe ammesso: {{ maxBombs }}
-                    </div>
-                    <div>
-                        <button>Genera griglia</button>
                     </div>
                 </aside>
 
