@@ -19,7 +19,11 @@ const app = new Vue({
         // Script utilities
         bombsArray: [],
         clickedSquares: [],
+
+        // Game flags
         gameStarted: false,
+        victory: false,
+        defeat: false,
     },
     computed: {
         maxBombs() {
@@ -66,12 +70,11 @@ const app = new Vue({
     },
     methods: {
         playGame(x, y) {
+            // Square refs
             const clickedSquareId = this.squareId(x, y);
-            // console.log('Square clicked', `x:${x} y:${y} id:${clickedSquareId}`);
 
-            // Initial click (start game)
+            // Start game condition
             if (!this.gameStarted) {
-                // console.log('Faccio partire il gioco');
                 this.gameStarted = true;
 
                 // Bomb generation
@@ -85,20 +88,59 @@ const app = new Vue({
                 }
             }
 
-            // Bomb check
-            const squareDomRef = document.querySelector(`#square-${clickedSquareId}`);
+            // Defeat condition check
             if (this.bombsArray.includes(clickedSquareId)) {
-
-                squareDomRef.classList.add('bomb');
                 this.gameStarted = false;
-
-                // TODO: events in bad end case
-
-            } else {
-
-                this.bombsAround(x, y);
-                
+                this.defeat = true;
+                this.showAllBombs();
+                return;
             }
+
+            // No bomb: the game continues
+            this.bombsAround(x, y);
+
+            // Victory condition check
+            if (this.safeCellsRemaining == 0) {
+                this.gameStarted = false;
+                this.victory = true;
+                this.showAllBombs();
+                return;
+            }
+        },
+
+        showAllBombs() {
+            const allSquares = document.querySelectorAll('.square');
+
+            if (this.victory) {
+                allSquares.forEach((square, id) => {
+                    if (this.bombsArray.includes(id)) {
+                        square.innerHTML = `<img src="./img/quack.png" alt="quack bomb">`;
+                    }
+                });
+            }
+
+            if (this.defeat) {
+                allSquares.forEach((square, id) => {
+                    if (this.bombsArray.includes(id)) {
+                        square.classList.add('bomb');
+                        square.innerHTML = `<img src="./img/quack.png" alt="quack bomb">`;
+                    }
+                });
+            }
+        },
+
+        resetGrid() {
+
+            this.bombsArray = [];
+            this.clickedSquares = [];
+            this.victory = false;
+            this.defeat = false;
+
+            const allSquares = document.querySelectorAll('.square');
+            allSquares.forEach(square => {
+                square.innerHTML = '';
+                square.className = 'square';
+            });
         },
 
         bombsAround(x, y) {
@@ -122,7 +164,6 @@ const app = new Vue({
             if (bombsAround === 0) {
                 this.squaresAround(x, y).forEach(squareAround => {
                     if (!this.clickedSquares.includes(squareAround.id) && !this.bombsArray.includes(squareAround.id)) {
-                        // WARN: ricorsivity
                         this.bombsAround(squareAround.x, squareAround.y);
                     }
                 })
