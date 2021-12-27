@@ -19,6 +19,8 @@ const app = new Vue({
         // Script utilities
         bombsArray: [],
         clickedSquares: [],
+        timer: 0,
+        runningTimer: null,
 
         // Game flags
         gameStarted: false,
@@ -67,10 +69,34 @@ const app = new Vue({
             return this.gridCells - this.bombs - this.clickedSquares.length;
         },
 
+        // Timer
+        formattedTimer() {
+            const timerInSeconds = this.timer;
+            const seconds = timerInSeconds % 60;
+            const minutes = Math.floor(timerInSeconds / 60);
+            let formattedSeconds = '';
+            let formattedMinutes = '';
+
+            if (seconds < 10) {
+                formattedSeconds = `0${seconds}`;
+            } else {
+                formattedSeconds = `${seconds}`;
+            }
+
+            if (minutes < 10) {
+                formattedMinutes = `0${minutes}`;
+            } else {
+                formattedMinutes = `${minutes}`;
+            }
+            
+
+            return `${formattedMinutes} : ${formattedSeconds}`;
+        },
+
     },
     methods: {
         playGame(x, y) {
-            // Square refs
+            // Square ref
             const clickedSquareId = this.squareId(x, y);
 
             // Start game condition
@@ -78,14 +104,16 @@ const app = new Vue({
                 this.gameStarted = true;
 
                 // Bomb generation
-                let i = 0;
-                while (i < this.bombs) {
-                    const newRand = this.rand(0, this.gridCells - 1);
+                let newRand = 0;
+                while (this.bombsArray.length <= this.bombs - 1) {
+                    newRand = this.rand(0, this.gridCells - 1);
                     if (!this.bombsArray.includes(newRand) && !this.bombsArray.includes(clickedSquareId)) {
                         this.bombsArray.push(newRand);
-                        i++;
                     }
                 }
+
+                // Start timer
+                this.runningTimer = setInterval(this.timerFunc, 1000);
             }
 
             // Defeat condition check
@@ -93,6 +121,7 @@ const app = new Vue({
                 this.gameStarted = false;
                 this.defeat = true;
                 this.showAllBombs();
+                clearInterval(this.runningTimer);
                 return;
             }
 
@@ -100,10 +129,11 @@ const app = new Vue({
             this.bombsAround(x, y);
 
             // Victory condition check
-            if (this.safeCellsRemaining == 0) {
+            if (this.safeCellsRemaining === 0) {
                 this.gameStarted = false;
                 this.victory = true;
                 this.showAllBombs();
+                clearInterval(this.runningTimer);
                 return;
             }
         },
@@ -129,12 +159,12 @@ const app = new Vue({
             }
         },
 
-        resetGrid() {
-
+        reset() {
             this.bombsArray = [];
             this.clickedSquares = [];
             this.victory = false;
             this.defeat = false;
+            this.timer = 0;
 
             const allSquares = document.querySelectorAll('.square');
             allSquares.forEach(square => {
@@ -157,7 +187,9 @@ const app = new Vue({
             });
 
             // Count print
-            domRef.innerHTML = bombsAround;
+            if (bombsAround > 0) {
+                domRef.innerHTML = bombsAround;
+            }
             domRef.classList.add('safe');
             domRef.classList.add(`safe-${bombsAround}`);
 
@@ -225,6 +257,10 @@ const app = new Vue({
                     y: squareY + 1,
                 }
             ];
+        },
+
+        timerFunc() {
+            this.timer++;
         },
 
         rand(min, max) {
