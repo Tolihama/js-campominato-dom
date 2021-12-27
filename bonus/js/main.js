@@ -104,10 +104,9 @@ const app = new Vue({
                 this.gameStarted = true;
 
                 // Bomb generation
-                let newRand = 0;
                 while (this.bombsArray.length <= this.bombs - 1) {
-                    newRand = this.rand(0, this.gridCells - 1);
-                    if (!this.bombsArray.includes(newRand) && !this.bombsArray.includes(clickedSquareId)) {
+                    const newRand = this.rand(0, this.gridCells - 1);
+                    if (!this.bombsArray.includes(newRand) && newRand !== clickedSquareId) {
                         this.bombsArray.push(newRand);
                     }
                 }
